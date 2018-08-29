@@ -31,15 +31,12 @@ port = config.get('port');
 
  */ 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true}));
 app.use(morgan('dev'));
 app.use(cors());
 
-app.get('/', (req, res) => {
-    // res.json({
-        res.send({
-        user: "Fernando Gargano"
-    });
-});
+const userRoutes = require('./routes/account');
+app.use('/api/accounts', userRoutes);
 
 app.listen(port, (err) => {
     console.log(`Magic happens on port awesome ${port}`);
