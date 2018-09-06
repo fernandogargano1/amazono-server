@@ -35,8 +35,17 @@ app.use(express.urlencoded({ extended: true}));
 app.use(morgan('dev'));
 app.use(cors());
 
+const mainRoutes = require('./routes/main');
 const userRoutes = require('./routes/account');
+const sellerRoutes = require('./routes/seller');
+
+app.use('/api', mainRoutes);
 app.use('/api/accounts', userRoutes);
+app.use('/api/seller', sellerRoutes);
+
+
+
+
 
 app.listen(port, (err) => {
     console.log(`Magic happens on port awesome ${port}`);

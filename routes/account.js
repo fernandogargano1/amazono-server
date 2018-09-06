@@ -85,7 +85,7 @@ router.route('/profile')
                 res.json(
                     {
                         success: true, 
-                        auser: user,
+                        user: user,
                         message: "Successful"
                     }
                 );
