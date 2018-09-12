@@ -6,7 +6,7 @@ router.route('/categories')
         try {
             const categories = await Category.find({});
             res.json({
-                sucess: true,
+                success: true,
                 message: 'Successful',
                 categories: categories
             });
