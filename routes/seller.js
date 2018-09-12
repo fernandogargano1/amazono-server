@@ -9,8 +9,8 @@ const faker = require('faker');
 
 const s3 = new aws.S3(
         { 
-            accessKeyId: "AKIAJAARXZXUM3SCBBJQ", 
-            secretAccessKey: "IRpPYx+ROqDPT21vtHh86d+v1WT0WzAjGlh0z/Z2"
+            accessKeyId: "xxxxxxxxxxxxxxxxxxxxxxxx", 
+            secretAccessKey: "yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy"
         }
 );
 
