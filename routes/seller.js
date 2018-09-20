@@ -7,12 +7,13 @@ const multerS3 = require('multer-s3');
 
 const faker = require('faker');
 
-const s3 = new aws.S3(
-        { 
-            accessKeyId: "xxxxxxxxxxxxxxxxxxxxxxxx", 
-            secretAccessKey: "yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy"
-        }
-);
+// This is totally unnecessary for this app, we can store images on our local nodejs server
+// const s3 = new aws.S3(
+//         { 
+//             accessKeyId: "xxxxxxxxxxxxxxxxxxxxxxxxxxxx", 
+// 			secretAccessKey: "yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy"
+//         }
+// );
 
 
 const checkJWT = require('../middlewares/check-jwt');
@@ -21,15 +22,17 @@ const checkJWT = require('../middlewares/check-jwt');
 //     cb(null, { fieldName: file.fieldName });
 // },
 
-const upload = multer({
-    storage: multerS3({
-        s3: s3,
-        bucket: 'feramazonowebapplication',        
-        key: function (req, file, cb) {
-            cb(null, Date.now().toString())
-        }
-    })
-});
+// const upload = multer({
+//     storage: multerS3({
+//         s3: s3,
+//         bucket: 'feramazonowebapplication',        
+//         key: function (req, file, cb) {
+//             cb(null, Date.now().toString())
+//         }
+//     })
+// });
+
+var upload = multer({ dest: 'uploads/' });
 
 router.route('/products')
     .get(checkJWT, async (req, res, next ) => {
@@ -66,13 +69,16 @@ router.route('/products')
         }        
     })
     .post([checkJWT, upload.single('product_picture')], (req, res, next) => {
+        
+        console.log(req.body);        
         let product = new Product();
         product.owner = req.decoded.user._id;
         product.category = req.body.categoryId;
         product.title = req.body.title;
         product.price = req.body.price;
-        product.description = req.body.description;
-        product.image = req.file.location;
+        product.description = req.body.description;           
+        product.image = 'http://localhost:3030/' + req.file.filename;
+        // product.image = req.location.name;
         product.save();
 
         res.json({
