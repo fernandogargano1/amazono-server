@@ -1,7 +1,10 @@
 const router = require('express').Router();
-const async = require('async');
+// const async = require('async');
 const Category = require('../models/category');
 const Product = require('../models/product');
+const Review = require('../models/review');
+
+const checkJWT = require('../middlewares/check-jwt');
 
 router.get('/products', async (req, res, next) => {
     // This handler lacks some validation, ex: validate page number
@@ -131,6 +134,34 @@ router.get('/product/:id', async (req, res, next) => {
     } catch (err) {
         next(err);
     }    
+});
+
+router.post('/review', checkJWT, async (req, res, next) => {
+    try {
+        const product = await Product.findOne({ _id: req.body.productId });
+
+        if(!product) return res.json({ success: false, message: 'No product found.'});
+
+        const review = new Review();
+        review.owner = req.decoded.user._id;
+
+        if (req.body.title) review.title = req.body.title;
+        if (req.body.description) review.title = req.body.description;
+
+        review.rating = req.body.rating;
+
+        product.reviews.push(review._id);
+        // Meter una transaction
+        product.save();
+        review.save();
+
+        res.json({
+            sucess: true,
+            message: 'Successfully added the review.'
+        });
+    } catch (error) {
+        next(error['message']);
+    }  
 });
 
 module.exports = router;
