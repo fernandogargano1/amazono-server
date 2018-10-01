@@ -92,6 +92,7 @@ router.get('/categories/:id', async (req, res, next) => {
             .limit(perPage)
             .populate('category')
             .populate('owner')
+            .populate('review')
             .exec();
 
         const category = await Category.findOne({ _id: req.params.id });
@@ -118,6 +119,7 @@ router.get('/product/:id', async (req, res, next) => {
         const product = await Product.findById(req.params.id)
         .populate('category')
         .populate('owner')
+        .deepPopulate('reviews.owner')
         .exec();
 
         if (!product) {
