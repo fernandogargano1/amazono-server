@@ -10,8 +10,7 @@ router.get('/products', async (req, res, next) => {
     // This handler lacks some validation, ex: validate page number
     const perPage = 10; 
 
-    const page = req.query.page || 1 ;
-    console.log('page: ', page);    
+    const page = req.query.page || 1 ;      
 
     try {
         const totalProducts = await Product.count({});
@@ -66,8 +65,7 @@ router.get('/categories/:id', async (req, res, next) => {
     // This handler lacks some validation, ex: validate page number
     const perPage = 10; 
 
-    const page = req.query.page || 1 ;
-    console.log('page: ', page);
+    const page = req.query.page || 1 ;    
 
     // Product.find({ category: req.params.id })
     //     .populate('category')
@@ -128,6 +126,7 @@ router.get('/product/:id', async (req, res, next) => {
                 message: 'Product is not found' 
             });
         }
+        
         res.json({
             success: true,
             product: product
@@ -148,7 +147,7 @@ router.post('/review', checkJWT, async (req, res, next) => {
         review.owner = req.decoded.user._id;
 
         if (req.body.title) review.title = req.body.title;
-        if (req.body.description) review.title = req.body.description;
+        if (req.body.description) review.description = req.body.description;
 
         review.rating = req.body.rating;
 

@@ -31,8 +31,7 @@ ProductSchema
             //     rating += review.rating;
             // });
 
-            this.reviews.forEach(review => {
-                console.log(review);
+            this.reviews.forEach(review => {        
                 rating += review.rating;
             });
 
